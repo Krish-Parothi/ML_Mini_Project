@@ -1,0 +1,17 @@
+# Virtual environments
+.venv/
+env/
+venv/
+
+# Python cache
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+
+# Large NumPy matrices (regenerated automatically by data_preprocessing.py)
+data/*.npy
+
+# OS files
+.DS_Store
+Thumbs.db

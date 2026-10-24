@@ -1,0 +1,8 @@
+{
+  "train_samples": 39000,
+  "val_samples": 9000,
+  "test_samples": 12000,
+  "train_phishing_rate": 0.4271,
+  "val_phishing_rate": 0.4271,
+  "test_phishing_rate": 0.4271
+}

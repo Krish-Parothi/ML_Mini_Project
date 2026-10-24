@@ -1,0 +1,6 @@
+{
+  "best_model_name": "LightGBM",
+  "best_f1_score": 1.0,
+  "use_scaled": false,
+  "trained_date": "2026-10-24 23:08:18"
+}

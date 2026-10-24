@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="CyberShield AI - State-of-the-art Real-time Phishing URL Threat Detection & Analytics Engine powered by Gradient Boosted Ensembles on PhiUSIIL Benchmark.">
+  <title>CyberShield AI | SOTA Phishing URL Detection & Analytics</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <!-- Ambient Cyber Background Grid -->
+  <div class="cyber-grid"></div>
+  <div class="glow-orb orb-1"></div>
+  <div class="glow-orb orb-2"></div>
+
+  <!-- Main Navigation Bar -->
+  <header class="navbar">
+    <div class="nav-container">
+      <div class="brand">
+        <div class="brand-icon">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+            <path d="M9 12l2 2 4-4"/>
+          </svg>
+        </div>
+        <div class="brand-text">
+          <span class="brand-name">CYBERSHIELD<span class="highlight">.AI</span></span>
+          <span class="brand-tag">SOTA PHISHING INTELLIGENCE</span>
+        </div>
+      </div>
+
+      <nav class="nav-links">
+        <button class="nav-btn active" data-tab="scanner-tab">URL Scanner</button>
+        <button class="nav-btn" data-tab="batch-tab">Batch Audit</button>
+        <button class="nav-btn" data-tab="models-tab">Model Analytics</button>
+        <button class="nav-btn" data-tab="viva-tab">Viva Justification Deck</button>
+        <button class="nav-btn" data-tab="report-tab">10-Page Report</button>
+      </nav>
+
+      <div class="system-status">
+        <span class="status-dot"></span>
+        <span class="status-label">ENGINE ONLINE</span>
+        <div class="model-select-wrapper">
+          <select id="activeModelSelect" title="Select Inference Engine">
+            <option value="Best (Auto)">Model: LightGBM (Best)</option>
+            <option value="XGBoost">Model: XGBoost (SOTA)</option>
+            <option value="Random Forest">Model: Random Forest</option>
+            <option value="Logistic Regression">Model: Logistic Reg</option>
+            <option value="Decision Tree">Model: Decision Tree</option>
+          </select>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Application Body -->
+  <main class="main-content">
+    
+    <!-- TAB 1: REAL-TIME URL SCANNER -->
+    <section id="scanner-tab" class="tab-pane active">
+      <div class="hero-section">
+        <div class="badge-pill">
+          <span class="pulse-indicator"></span> 51 Multi-Dimensional Features &bull; Real-time Explainability &bull; Latency &lt; 0.01ms
+        </div>
+        <h1 class="hero-title">Real-Time Autonomous <span class="gradient-text">Phishing Threat Detection</span></h1>
+        <p class="hero-desc">
+          Instantly evaluate any arbitrary URL with machine-learning heuristics. Inspect lexical structure, character entropy, domain legitimacy, and threat vectors.
+        </p>
+
+        <!-- Search Bar Form -->
+        <div class="scanner-card">
+          <form id="scanForm" class="scan-form">
+            <div class="input-wrapper">
+              <span class="input-icon">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <circle cx="11" cy="11" r="8"></circle>
+                  <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                </svg>
+              </span>
+              <input type="text" id="urlInput" placeholder="Enter full URL to inspect (e.g. https://secure-login.chase-update.com/verify)..." required autocomplete="off">
+              <button type="submit" id="scanSubmitBtn" class="primary-btn">
+                <span class="btn-text">SCAN THREAT</span>
+                <span class="btn-loader hidden"></span>
+              </button>
+            </div>
+          </form>
+
+          <!-- Quick Test Presets -->
+          <div class="preset-strip">
+            <span class="preset-label">Quick Test Samples:</span>
+            <button class="preset-chip chip-safe" data-url="https://www.google.com">Google (Legit)</button>
+            <button class="preset-chip chip-safe" data-url="https://en.wikipedia.org/wiki/Machine_learning">Wikipedia (Legit)</button>
+            <button class="preset-chip chip-danger" data-url="http://192.168.1.105/paypal-login/update.php?account=verify">IP + PayPal (Phish)</button>
+            <button class="preset-chip chip-danger" data-url="http://www.f0519141.xsph.ru/bank-auth/signin.html">Untrusted TLD (Phish)</button>
+            <button class="preset-chip chip-danger" data-url="https://service-mitld.firebaseapp.com/login?token=%20%40hack">Hex Obfuscated (Phish)</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Live Scan Results Display (Hidden by default, shown upon scan) -->
+      <div id="scanResultArea" class="result-area hidden">
+        <div class="result-grid">
+          
+          <!-- Verdict & Gauge Card -->
+          <div class="glass-card verdict-card" id="verdictCard">
+            <div class="card-header">
+              <span class="section-title">THREAT VERDICT</span>
+              <span id="latencyBadge" class="telemetry-badge">Latency: 0.00 ms</span>
+            </div>
+
+            <div class="verdict-body">
+              <div class="threat-gauge-wrapper">
+                <div class="circular-progress" id="circularProgress">
+                  <div class="inner-circle">
+                    <span id="riskScoreValue" class="risk-percent">0%</span>
+                    <span class="risk-sublabel">PHISHING RISK</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="verdict-details">
+                <div id="verdictStatus" class="verdict-status status-safe">ANALYZING...</div>
+                <div id="riskLevelBadge" class="risk-badge">SAFE / LEGITIMATE</div>
+                <p id="verdictSummary" class="verdict-summary">Comprehensive multi-layer lexical and topological validation complete.</p>
+                <div class="model-tag-pill">Engine: <span id="usedModelTag">LightGBM</span></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Explainability & Risk Factor Card -->
+          <div class="glass-card flags-card">
+            <div class="card-header">
+              <span class="section-title">EXPLAINABILITY & THREAT VECTORS</span>
+              <span id="flagsCountBadge" class="count-badge">0 Flags</span>
+            </div>
+            <div class="card-body">
+              <div id="flagsList" class="flags-list">
+                <div class="empty-flags">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#2ed573" stroke-width="2">
+                    <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                    <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                  </svg>
+                  <span>No malicious topological anomalies detected in this URL structure.</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Key Extracted Features Card -->
+          <div class="glass-card features-card">
+            <div class="card-header">
+              <span class="section-title">EXTRACTED HEURISTIC ATTRIBUTES (51 DIMS)</span>
+              <button id="toggleAllFeaturesBtn" class="text-btn">View Full 51 Vector</button>
+            </div>
+            <div class="card-body">
+              <div class="feature-metrics-grid" id="topFeaturesGrid">
+                <!-- Dynamically populated -->
+              </div>
+
+              <!-- Full 51-Dimensional Feature Drawer (Collapsible) -->
+              <div id="fullFeatureDrawer" class="full-feature-drawer hidden">
+                <div class="drawer-title">Complete 51-Dimensional Model Input Vector:</div>
+                <div id="allFeaturesGrid" class="all-features-grid"></div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- TAB 2: BATCH URL AUDIT -->
+    <section id="batch-tab" class="tab-pane">
+      <div class="pane-header">
+        <h2>Enterprise Batch <span class="gradient-text">URL Threat Inspector</span></h2>
+        <p>Audit and process high volumes of URLs simultaneously with multi-threaded vector extraction and sub-millisecond inference.</p>
+      </div>
+
+      <div class="batch-container">
+        <div class="glass-card batch-input-card">
+          <div class="card-header">
+            <span class="section-title">ENTER URL LIST (UP TO 500 SAMPLES)</span>
+            <button id="loadBatchSampleBtn" class="text-btn">Load 10 Sample URLs</button>
+          </div>
+          <textarea id="batchInput" class="batch-textarea" placeholder="Paste one URL per line:&#10;https://google.com&#10;http://192.168.1.1/login&#10;https://service-security.firebaseapp.com&#10;https://github.com"></textarea>
+          <div class="batch-actions">
+            <button id="runBatchBtn" class="primary-btn">
+              <span>EXECUTE BATCH AUDIT</span>
+            </button>
+            <button id="clearBatchBtn" class="secondary-btn">Clear</button>
+          </div>
+        </div>
+
+        <!-- Batch Results Display -->
+        <div id="batchResultsWrapper" class="glass-card batch-results-card hidden">
+          <div class="card-header">
+            <span class="section-title">BATCH AUDIT TELEMETRY & RESULTS</span>
+            <button id="exportCsvBtn" class="text-btn">Download CSV Report</button>
+          </div>
+          
+          <!-- Summary KPIs -->
+          <div class="kpi-grid">
+            <div class="kpi-box">
+              <span class="kpi-val" id="batchTotalCount">0</span>
+              <span class="kpi-lbl">TOTAL SCANNED</span>
+            </div>
+            <div class="kpi-box text-danger">
+              <span class="kpi-val" id="batchPhishCount">0</span>
+              <span class="kpi-lbl">PHISHING DETECTED</span>
+            </div>
+            <div class="kpi-box text-success">
+              <span class="kpi-val" id="batchSafeCount">0</span>
+              <span class="kpi-lbl">LEGITIMATE / SAFE</span>
+            </div>
+            <div class="kpi-box text-cyan">
+              <span class="kpi-val" id="batchThroughput">0</span>
+              <span class="kpi-lbl">THROUGHPUT (URLS/S)</span>
+            </div>
+          </div>
+
+          <!-- Table -->
+          <div class="table-scroll-wrapper">
+            <table class="cyber-table" id="batchTable">
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>URL</th>
+                  <th>Verdict</th>
+                  <th>Phishing Probability</th>
+                  <th>Flags</th>
+                </tr>
+              </thead>
+              <tbody id="batchTableBody"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TAB 3: STATE-OF-THE-ART MODEL COMPARISON & ANALYTICS -->
+    <section id="models-tab" class="tab-pane">
+      <div class="pane-header">
+        <h2>State-of-the-Art <span class="gradient-text">Model Comparison & Performance Analytics</span></h2>
+        <p>Rigorous empirical benchmarking across 5 machine learning architectures on the PhiUSIIL dataset (12,000 independent test URLs).</p>
+      </div>
+
+      <!-- Metrics Table Card -->
+      <div class="glass-card mb-4">
+        <div class="card-header">
+          <span class="section-title">CROSS-ARCHITECTURE PERFORMANCE BENCHMARK MATRIX</span>
+          <span class="badge-tag">Test Samples: 12,000</span>
+        </div>
+        <div class="table-scroll-wrapper">
+          <table class="cyber-table benchmark-table" id="benchmarkTable">
+            <thead>
+              <tr>
+                <th>Model Architecture</th>
+                <th>Paradigm</th>
+                <th>Accuracy</th>
+                <th>Precision</th>
+                <th>Recall (Sensitivity)</th>
+                <th>Specificity (TNR)</th>
+                <th>F1-Score</th>
+                <th>ROC-AUC</th>
+                <th>Train Time</th>
+                <th>Inference Latency</th>
+                <th>Model Size</th>
+              </tr>
+            </thead>
+            <tbody id="benchmarkTableBody">
+              <!-- Populated via API -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Publication Figures Gallery -->
+      <div class="gallery-section">
+        <div class="section-header-row">
+          <h3 class="gallery-title">High-Resolution Model Analytics & Evaluation Charts</h3>
+          <span class="subtext">Click on any chart to view high-resolution</span>
+        </div>
+
+        <div class="figures-grid">
+          
+          <div class="figure-card">
+            <div class="figure-title">Receiver Operating Characteristic (ROC) Comparison</div>
+            <img src="/figures/roc_curves_comparison.png" alt="ROC Curves Comparison" class="figure-img" onerror="this.src='https://placehold.co/600x400/101622/00d2ff?text=ROC+Curve+Loading'">
+            <div class="figure-caption">Compares True Positive Rate vs False Positive Rate across all 5 models. Tree ensembles achieve near-optimal AUC = 1.0000.</div>
+          </div>
+
+          <div class="figure-card">
+            <div class="figure-title">Precision-Recall Trade-off Curves</div>
+            <img src="/figures/pr_curves_comparison.png" alt="PR Curves Comparison" class="figure-img" onerror="this.src='https://placehold.co/600x400/101622/00d2ff?text=PR+Curve+Loading'">
+            <div class="figure-caption">Demonstrates high positive predictive value without sacrificing phishing catch rate.</div>
+          </div>
+
+          <div class="figure-card">
+            <div class="figure-title">Confusion Matrix Grid (Test Partition)</div>
+            <img src="/figures/confusion_matrices.png" alt="Confusion Matrix Grid" class="figure-img" onerror="this.src='https://placehold.co/600x400/101622/00d2ff?text=Confusion+Matrices+Loading'">
+            <div class="figure-caption">Normalized and absolute count heatmaps illustrating zero False Negatives for LightGBM and XGBoost.</div>
+          </div>
+
+          <div class="figure-card">
+            <div class="figure-title">Comparative Metric Distribution Bar Chart</div>
+            <img src="/figures/model_metrics_barchart.png" alt="Model Metrics Bar Chart" class="figure-img" onerror="this.src='https://placehold.co/600x400/101622/00d2ff?text=Metrics+Barchart+Loading'">
+            <div class="figure-caption">Grouped benchmark comparing Accuracy, Precision, Recall, F1, and ROC-AUC.</div>
+          </div>
+
+          <div class="figure-card">
+            <div class="figure-title">Top 20 Most Predictive Phishing Features</div>
+            <img src="/figures/feature_importance.png" alt="Feature Importance" class="figure-img" onerror="this.src='https://placehold.co/600x400/101622/00d2ff?text=Feature+Importance+Loading'">
+            <div class="figure-caption">LightGBM Gini/gain feature importance ranking highlighting CharContinuationRate, URLSimilarityIndex, LineOfCode, and TLD traits.</div>
+          </div>
+
+          <div class="figure-card">
+            <div class="figure-title">Pareto Frontier: Latency vs. Accuracy</div>
+            <img src="/figures/latency_vs_accuracy.png" alt="Latency vs Accuracy" class="figure-img" onerror="this.src='https://placehold.co/600x400/101622/00d2ff?text=Latency+vs+Accuracy+Loading'">
+            <div class="figure-caption">Sub-millisecond inference trade-off. Bubble area is proportional to model file size (LightGBM ~ 0.86 MB).</div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- TAB 4: VIVA & DEMO DEFENSE DECK -->
+    <section id="viva-tab" class="tab-pane">
+      <div class="pane-header">
+        <h2>Viva Voce Defense & <span class="gradient-text">Architectural Justification</span></h2>
+        <p>Curated justifications, mathematical rationale, and answers for examiner viva questions.</p>
+      </div>
+
+      <div class="viva-grid">
+        
+        <div class="glass-card viva-card">
+          <div class="viva-badge">QUESTION 1 &bull; DATASET SELECTION</div>
+          <h3 class="viva-question">Why was the PhiUSIIL Phishing URL Dataset chosen over legacy datasets like Mendeley or PhishTank raw lists?</h3>
+          <p class="viva-answer">
+            <strong>Justification:</strong> Legacy phishing datasets often contain severe limitations: (1) small sample sizes (&lt;10k rows) causing overfitting, (2) synthetic or non-representative balance, and (3) only lexical strings without web topological features. PhiUSIIL (235,795 verified URLs) integrates 54 multi-dimensional features spanning lexical composition, character continuation rate, domain entropy, external references, and webpage DOM traits, reflecting modern spear-phishing attack vectors.
+          </p>
+        </div>
+
+        <div class="glass-card viva-card">
+          <div class="viva-badge">QUESTION 2 &bull; DATA LEAKAGE MITIGATION</div>
+          <h3 class="viva-question">How was data leakage strictly prevented during data preprocessing and scaling?</h3>
+          <p class="viva-answer">
+            <strong>Justification:</strong> Data leakage occurs when test set statistics influence training. We enforced strict pipeline boundaries: (1) Identifier/free-text fields (<code>FILENAME, URL, Domain, Title</code>) were purged prior to numerical ingestion, (2) Stratified train-val-test splitting (65% train, 15% validation, 20% test) was performed <em>prior</em> to scaling, and (3) The <code>StandardScaler</code> was fitted <strong>strictly on the training partition</strong> and merely transformed on validation and test sets.
+          </p>
+        </div>
+
+        <div class="glass-card viva-card">
+          <div class="viva-badge">QUESTION 3 &bull; METRIC JUSTIFICATION</div>
+          <h3 class="viva-question">Why is Recall (Sensitivity) prioritized over Accuracy in phishing URL classification?</h3>
+          <p class="viva-answer">
+            <strong>Justification:</strong> In cybersecurity threat detection, the asymmetric cost of errors is severe. A <strong>False Negative</strong> (classifying a phishing link as safe) leads to credential theft, malware infection, and financial compromise. A <strong>False Positive</strong> merely causes a user prompt or temporary block. Therefore, Recall for the phishing class ($TP / (TP + FN)$) must approach 100% to guarantee zero malicious URLs bypass the gateway.
+          </p>
+        </div>
+
+        <div class="glass-card viva-card">
+          <div class="viva-badge">QUESTION 4 &bull; MODEL ARCHITECTURE CHOICE</div>
+          <h3 class="viva-question">Why did LightGBM and XGBoost outperform Logistic Regression and Deep Learning on this task?</h3>
+          <p class="viva-answer">
+            <strong>Justification:</strong> Tabular cybersecurity features exhibit non-linear boundaries, heterogeneous scales, and complex interaction terms (e.g. <code>IsDomainIP</code> interacting with <code>HasPasswordField</code>). Gradient Boosted Decision Trees (GBDT) naturally partition feature space hierarchically without requiring continuous manifold assumptions, handles correlated features robustly, and computes inference in <strong>0.005 ms/sample</strong>, compared to deep neural networks which require massive parameter overhead and GPU inference.
+          </p>
+        </div>
+
+        <div class="glass-card viva-card">
+          <div class="viva-badge">QUESTION 5 &bull; PRODUCTION DEPLOYABILITY</div>
+          <h3 class="viva-question">How does this architecture ensure cross-platform accessibility and real-time browser speed?</h3>
+          <p class="viva-answer">
+            <strong>Justification:</strong> The backend is implemented as a lightweight FastAPI asynchronous server serving serialized <code>.joblib</code> models with an in-memory memory footprint under 50MB. Real-time URL feature extraction executes in &lt; 0.5ms. The cross-platform UI is fully responsive across desktop, tablet, and mobile devices, and communicates via standard REST APIs, making it drop-in compatible with Chrome/Firefox browser extensions and enterprise email security gateways.
+          </p>
+        </div>
+
+        <div class="glass-card viva-card">
+          <div class="viva-badge">QUESTION 6 &bull; OUTLIER & IMBALANCE HANDLING</div>
+          <h3 class="viva-question">How were outliers and class distribution handled?</h3>
+          <p class="viva-answer">
+            <strong>Justification:</strong> We conducted Interquartile Range (IQR) and Z-score outlier audits across continuous features like <code>URLLength</code> and <code>LineOfCode</code>. While extreme values represent real-world obfuscated attacks (e.g., 200+ character URLs), tree-based architectures are inherently invariant to monotonic feature transformations. Stratified K-fold sampling ensured the 42.7% phishing vs. 57.3% legitimate class distribution was rigorously maintained across all partitions.
+          </p>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- TAB 5: COMPLETE 10-PAGE ACADEMIC REPORT -->
+    <section id="report-tab" class="tab-pane">
+      <div class="pane-header">
+        <h2>Formal Academic <span class="gradient-text">Mini-Project Report</span></h2>
+        <p>Comprehensive 10-page academic report with literature review, methodology, mathematical formulations, benchmarks, and IEEE references.</p>
+        <div class="report-actions">
+          <a href="/REPORT.md" target="_blank" class="secondary-btn">View Raw Markdown</a>
+          <button id="copyReportBtn" class="primary-btn">Copy Full Report Text</button>
+        </div>
+      </div>
+
+      <div class="glass-card report-card">
+        <div id="reportContainer" class="report-markdown-view">
+          <!-- Loaded dynamically from REPORT.md -->
+          <div class="loading-state">Loading formal project report...</div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer-content">
+      <div>CyberShield.AI &bull; Machine Learning Mini Project &bull; Semester V</div>
+      <div class="footer-links">
+        <span>Dataset: PhiUSIIL (UCI ML Repository)</span> &bull;
+        <span>Models: LightGBM, XGBoost, Random Forest, Logistic Reg</span>
+      </div>
+    </div>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>

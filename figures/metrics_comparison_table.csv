@@ -1,0 +1,6 @@
+,model_type,accuracy,precision,recall,specificity,f1_score,roc_auc,train_time_sec,latency_ms_per_sample,model_size_mb
+LightGBM,Boosting Ensemble,1.0,1.0,1.0,1.0,1.0,1.0,7.54,0.006,0.86
+XGBoost,Boosting Ensemble,1.0,1.0,1.0,1.0,1.0,1.0,15.35,0.0051,0.23
+Random Forest,Bagging Ensemble,1.0,1.0,1.0,1.0,1.0,1.0,13.76,0.0604,1.58
+Logistic Regression,Linear Baseline,0.9998,0.9998,0.9996,0.9999,0.9997,1.0,1.11,0.0019,0.0
+Decision Tree,Tree Baseline,1.0,1.0,1.0,1.0,1.0,1.0,2.04,0.0037,0.0
