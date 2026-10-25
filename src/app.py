@@ -32,9 +32,10 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-MODELS_DIR = "models"
-FIGURES_DIR = "figures"
-DATA_DIR = "data"
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+MODELS_DIR = os.path.join(BASE_DIR, "models")
+FIGURES_DIR = os.path.join(BASE_DIR, "figures")
+DATA_DIR = os.path.join(BASE_DIR, "data")
 
 # Global Model Cache
 LOADED_MODELS = {}
