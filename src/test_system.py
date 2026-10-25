@@ -12,7 +12,7 @@ import urllib.request
 import json
 import time
 
-BASE_URL = "http://127.0.0.1:8000"
+BASE_URL = "https://ml-mini-project-1mlc.onrender.com"
 
 def run_tests():
     print("=" * 65)

@@ -3,6 +3,11 @@
  * Standard Enterprise Architecture (Scanner, Batch Telemetry, Benchmarking, Report)
  */
 
+// Target Cloud Production URL (Render) - removes local dependency
+const API_BASE = window.location.origin.includes("onrender.com")
+  ? "" 
+  : "https://ml-mini-project-1mlc.onrender.com";
+
 document.addEventListener("DOMContentLoaded", () => {
   initTabs();
   initScanner();
@@ -84,7 +89,7 @@ function initScanner() {
 
     try {
       const selectedModel = activeModelSelect.value;
-      const res = await fetch("/api/predict", {
+      const res = await fetch(`${API_BASE}/api/predict`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ url: url, model_name: selectedModel })
@@ -98,7 +103,7 @@ function initScanner() {
       renderScanResult(data);
     } catch (err) {
       console.error("Scan error:", err);
-      alert("Failed to inspect URL. Ensure server is running on http://127.0.0.1:8000.");
+      alert("Failed to inspect URL. Ensure server is reachable at https://ml-mini-project-1mlc.onrender.com.");
     } finally {
       btnText.textContent = "Analyze URL";
       btnLoader.classList.add("hidden");
@@ -200,7 +205,7 @@ function initScanner() {
     allGrid.innerHTML = '<div style="color:var(--color-text-tertiary);padding:0.5rem;font-size:0.8rem;">Populating full 51 vector...</div>';
     
     try {
-      const res = await fetch("/api/predict", {
+      const res = await fetch(`${API_BASE}/api/predict`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ url: url, model_name: "Best (Auto)" })
@@ -287,7 +292,7 @@ function initBatchAudit() {
 
     try {
       const activeModelSelect = document.getElementById("activeModelSelect");
-      const res = await fetch("/api/batch-predict", {
+      const res = await fetch(`${API_BASE}/api/batch-predict`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ urls: urls, model_name: activeModelSelect.value })
@@ -356,7 +361,7 @@ function initBatchAudit() {
 async function loadModelBenchmarks() {
   const tbody = document.getElementById("benchmarkTableBody");
   try {
-    const res = await fetch("/api/models");
+    const res = await fetch(`${API_BASE}/api/models`);
     const data = await res.json();
     const comparison = data.comparison;
     tbody.innerHTML = "";
@@ -398,7 +403,7 @@ async function loadReportMarkdown() {
   const copyBtn = document.getElementById("copyReportBtn");
 
   try {
-    const res = await fetch("/REPORT.md");
+    const res = await fetch(`${API_BASE}/REPORT.md`);
     if (!res.ok) throw new Error("Could not find REPORT.md");
     const md = await res.text();
     

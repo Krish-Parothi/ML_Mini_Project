@@ -87,17 +87,26 @@ uv pip install pandas numpy scikit-learn matplotlib seaborn joblib xgboost light
 .venv\Scripts\python src/train_models.py
 ```
 
-### 5. Launch Full-Stack Web Application (Module 3)
+## 🚀 Live Production Deployment
+
+- **Live Web Application:** [https://ml-mini-project-1mlc.onrender.com](https://ml-mini-project-1mlc.onrender.com)
+- **Interactive OpenAPI / Swagger Docs:** [https://ml-mini-project-1mlc.onrender.com/docs](https://ml-mini-project-1mlc.onrender.com/docs)
+
+*(Hosted on Render Cloud with automated CI/CD directly from GitHub `main` branch. No local environment required to test).*
+
+---
+
+### Local Server (Optional)
 ```powershell
-.venv\Scripts\python -m uvicorn src.app:app --host 127.0.0.1 --port 8000
+uvicorn src.app:app --reload
 ```
-Open **[http://127.0.0.1:8000](http://127.0.0.1:8000)** in your browser to access the live dashboard!
+Open **[http://127.0.0.1:8000](http://127.0.0.1:8000)** in your browser for local development.
 
 ---
 
 ## 🌐 API Documentation
 
-FastAPI automatically generates interactive Swagger/OpenAPI documentation at **[http://127.0.0.1:8000/docs](http://127.0.0.1:8000/docs)**.
+FastAPI automatically generates interactive Swagger/OpenAPI documentation at **[https://ml-mini-project-1mlc.onrender.com/docs](https://ml-mini-project-1mlc.onrender.com/docs)**.
 
 ### Key Endpoints:
 - `POST /api/predict`: Real-time single URL inference, risk percentage, and explainability flags.
