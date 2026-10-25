@@ -1,7 +1,6 @@
 /**
- * CyberShield AI - Frontend Application Controller
- * Handles real-time single URL inference, batch scanning,
- * model comparison telemetry, and viva presentation deck.
+ * CyberShield Security - Production UI Controller
+ * Standard Enterprise Architecture (Scanner, Batch Telemetry, Benchmarking, Report)
  */
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -16,7 +15,7 @@ document.addEventListener("DOMContentLoaded", () => {
    1. Tab Navigation System
    ========================================================================== */
 function initTabs() {
-  const navBtns = document.querySelectorAll(".nav-btn");
+  const navBtns = document.querySelectorAll(".nav-link, .nav-btn");
   const tabPanes = document.querySelectorAll(".tab-pane");
 
   navBtns.forEach(btn => {
@@ -47,16 +46,16 @@ function initScanner() {
   const activeModelSelect = document.getElementById("activeModelSelect");
   const resultArea = document.getElementById("scanResultArea");
   
-  // Preset Chips
-  document.querySelectorAll(".preset-chip").forEach(chip => {
-    chip.addEventListener("click", () => {
-      const url = chip.getAttribute("data-url");
+  // Quick Sample Chips
+  document.querySelectorAll(".test-chip, .sample-tag").forEach(tag => {
+    tag.addEventListener("click", () => {
+      const url = tag.getAttribute("data-url");
       urlInput.value = url;
       triggerScan(url);
     });
   });
 
-  // Form Submit
+  // Form Submission
   scanForm.addEventListener("submit", (e) => {
     e.preventDefault();
     const url = urlInput.value.trim();
@@ -74,13 +73,12 @@ function initScanner() {
       toggleFeaturesBtn.textContent = "Hide 51 Vector";
     } else {
       fullDrawer.classList.add("hidden");
-      toggleFeaturesBtn.textContent = "View Full 51 Vector";
+      toggleFeaturesBtn.textContent = "View Full Vector";
     }
   });
 
   async function triggerScan(url) {
-    // Show loading state
-    btnText.textContent = "SCANNING...";
+    btnText.textContent = "Analyzing...";
     btnLoader.classList.remove("hidden");
     submitBtn.disabled = true;
 
@@ -100,9 +98,9 @@ function initScanner() {
       renderScanResult(data);
     } catch (err) {
       console.error("Scan error:", err);
-      alert("Failed to inspect URL. Ensure server is online.");
+      alert("Failed to inspect URL. Ensure server is running on http://127.0.0.1:8000.");
     } finally {
-      btnText.textContent = "SCAN THREAT";
+      btnText.textContent = "Analyze URL";
       btnLoader.classList.add("hidden");
       submitBtn.disabled = false;
     }
@@ -111,7 +109,7 @@ function initScanner() {
   function renderScanResult(data) {
     resultArea.classList.remove("hidden");
 
-    // Telemetry & Verdict
+    // Telemetry & Verdict Header
     document.getElementById("latencyBadge").textContent = 
       `Inference: ${data.latency_ms.model_inference} ms | Total: ${data.latency_ms.total} ms`;
     document.getElementById("usedModelTag").textContent = data.model_used;
@@ -125,72 +123,72 @@ function initScanner() {
     const phishProb = data.phishing_probability;
     riskScoreValue.textContent = `${phishProb}%`;
 
-    // Dynamic Color Palette for Gauge & Verdict
-    let accentColor = "#2ed573"; // safe green
-    if (phishProb >= 85) {
-      accentColor = "#ff4757"; // critical red
-    } else if (phishProb >= 50) {
-      accentColor = "#ffa502"; // warning amber
-    } else if (phishProb >= 25) {
-      accentColor = "#00d2ff"; // low risk cyan
+    // Enterprise color states
+    let accentColor = "#10b981"; // Emerald
+    if (phishProb >= 75) {
+      accentColor = "#f43f5e"; // Rose Red
+    } else if (phishProb >= 40) {
+      accentColor = "#f59e0b"; // Amber
+    } else if (phishProb > 10) {
+      accentColor = "#3b82f6"; // Blue
     }
 
     riskScoreValue.style.color = accentColor;
-    circularProgress.style.background = `conic-gradient(${accentColor} ${phishProb * 3.6}deg, rgba(255, 255, 255, 0.05) ${phishProb * 3.6}deg)`;
+    circularProgress.style.background = `conic-gradient(${accentColor} ${phishProb * 3.6}deg, var(--color-canvas) ${phishProb * 3.6}deg)`;
 
     if (data.is_phishing) {
-      verdictStatus.textContent = "MALICIOUS PHISHING THREAT";
-      verdictStatus.className = "verdict-status status-threat";
+      verdictStatus.textContent = "Phishing Threat Detected";
+      verdictStatus.className = "verdict-status-pill status-threat";
       riskLevelBadge.textContent = data.risk_level;
-      riskLevelBadge.className = "risk-badge threat";
-      verdictSummary.textContent = "High probability of deceptive credential harvesting or weaponized topological obfuscation.";
+      riskLevelBadge.className = "risk-pill threat";
+      verdictSummary.textContent = "High probability of deceptive credential harvesting, spoofing, or topological evasion.";
     } else {
-      verdictStatus.textContent = "LEGITIMATE & SAFE URL";
-      verdictStatus.className = "verdict-status status-safe";
+      verdictStatus.textContent = "Legitimate URL";
+      verdictStatus.className = "verdict-status-pill status-safe";
       riskLevelBadge.textContent = data.risk_level;
-      riskLevelBadge.className = "risk-badge";
-      verdictSummary.textContent = "Lexical and topological indicators align with legitimate domain characteristics.";
+      riskLevelBadge.className = "risk-pill";
+      verdictSummary.textContent = "Lexical and topological indicators align with standard authentic web properties.";
     }
 
-    // Explainability Flags
+    // Explainability Indicators
     const flagsList = document.getElementById("flagsList");
     const flagsCountBadge = document.getElementById("flagsCountBadge");
     flagsList.innerHTML = "";
-    flagsCountBadge.textContent = `${data.flags.length} Flags`;
+    flagsCountBadge.textContent = `${data.flags.length} Indicators`;
 
     if (data.flags.length === 0) {
       flagsList.innerHTML = `
         <div class="empty-flags">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#2ed573" stroke-width="2">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
             <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
             <polyline points="22 4 12 14.01 9 11.01"></polyline>
           </svg>
-          <span>No suspicious topological or lexical anomalies detected in this URL.</span>
+          <span>No malicious lexical anomalies or heuristic flags detected.</span>
         </div>
       `;
     } else {
       data.flags.forEach(flag => {
         const item = document.createElement("div");
-        item.className = `flag-item ${flag.level}`;
+        item.className = "flag-row";
         item.innerHTML = `
-          <span class="flag-tag">${flag.level}</span>
-          <span class="flag-text">${flag.message}</span>
+          <span>${flag.message}</span>
+          <span class="flag-badge">${flag.level.toUpperCase()}</span>
         `;
         flagsList.appendChild(item);
       });
     }
 
-    // Top Key Features
+    // Key Features Grid
     const topGrid = document.getElementById("topFeaturesGrid");
     topGrid.innerHTML = "";
     for (const [key, val] of Object.entries(data.top_features)) {
-      const box = document.createElement("div");
-      box.className = "feature-metric-box";
-      box.innerHTML = `
-        <span class="feature-metric-label">${key}</span>
-        <span class="feature-metric-val">${typeof val === 'boolean' ? (val ? 'TRUE' : 'FALSE') : val}</span>
+      const cell = document.createElement("div");
+      cell.className = "metric-cell";
+      cell.innerHTML = `
+        <div class="metric-label">${key}</div>
+        <div class="metric-value">${typeof val === 'boolean' ? (val ? 'True' : 'False') : val}</div>
       `;
-      topGrid.appendChild(box);
+      topGrid.appendChild(cell);
     }
 
     // Complete 51-Dimensional Feature Drawer
@@ -199,9 +197,8 @@ function initScanner() {
 
   async function renderAllFeatures(url) {
     const allGrid = document.getElementById("allFeaturesGrid");
-    allGrid.innerHTML = '<div style="color:var(--text-dim);padding:0.5rem;">Extracting complete 51 vector...</div>';
+    allGrid.innerHTML = '<div style="color:var(--color-text-tertiary);padding:0.5rem;font-size:0.8rem;">Populating full 51 vector...</div>';
     
-    // We can extract via our feature engine client or format from backend
     try {
       const res = await fetch("/api/predict", {
         method: "POST",
@@ -226,83 +223,86 @@ function initScanner() {
 
       featureKeys.forEach(k => {
         const item = document.createElement("div");
-        item.className = "vector-item";
+        item.className = "drawer-cell";
+        const val = d.top_features[k] !== undefined ? d.top_features[k] : 0;
         item.innerHTML = `
-          <span class="vector-key">${k}</span>
-          <span class="vector-val">${d.top_features[k] !== undefined ? d.top_features[k] : (k.includes('Ratio') || k.includes('Prob') ? '0.045' : '1')}</span>
+          <span>${k}</span>
+          <span>${typeof val === 'boolean' ? (val ? 1 : 0) : val}</span>
         `;
         allGrid.appendChild(item);
       });
     } catch(e) {
-      allGrid.innerHTML = '<div style="color:red">Failed to render vector.</div>';
+      allGrid.innerHTML = '<div style="color:var(--color-danger);font-size:0.8rem;">Failed to expand vector.</div>';
     }
   }
 }
 
 /* ==========================================================================
-   3. Enterprise Batch URL Audit Controller
+   3. Batch URL Audit Controller
    ========================================================================== */
 function initBatchAudit() {
   const batchInput = document.getElementById("batchInput");
-  const runBatchBtn = document.getElementById("runBatchBtn");
-  const clearBatchBtn = document.getElementById("clearBatchBtn");
-  const loadSampleBtn = document.getElementById("loadBatchSampleBtn");
+  const runBtn = document.getElementById("runBatchBtn");
+  const clearBtn = document.getElementById("clearBatchBtn");
+  const sampleBtn = document.getElementById("loadBatchSampleBtn");
   const resultsWrapper = document.getElementById("batchResultsWrapper");
   const exportCsvBtn = document.getElementById("exportCsvBtn");
 
-  const sampleBatchURLs = [
+  const sampleUrls = [
     "https://www.google.com",
-    "https://github.com/Krish-Parothi",
+    "https://en.wikipedia.org/wiki/Phishing",
     "http://192.168.1.105/paypal-login/update.php?account=verify",
-    "https://en.wikipedia.org/wiki/Artificial_intelligence",
+    "https://www.github.com/login",
     "http://www.f0519141.xsph.ru/bank-auth/signin.html",
-    "https://www.microsoft.com",
-    "http://www.shprakserf.gq/verify-account",
     "https://service-mitld.firebaseapp.com/login?token=%20%40hack",
-    "https://amazon.com",
-    "http://www.kuradox92.lima-city.de/webscr/login"
+    "https://aws.amazon.com/console/",
+    "http://verify-bankofamerica.top/security/update.asp",
+    "https://stackoverflow.com/questions",
+    "http://apple-support-icloud-lock.xyz/auth/findmy"
   ];
 
-  loadSampleBtn.addEventListener("click", () => {
-    batchInput.value = sampleBatchURLs.join("\n");
+  sampleBtn.addEventListener("click", () => {
+    batchInput.value = sampleUrls.join("\n");
   });
 
-  clearBatchBtn.addEventListener("click", () => {
+  clearBtn.addEventListener("click", () => {
     batchInput.value = "";
     resultsWrapper.classList.add("hidden");
   });
 
   let currentBatchData = null;
 
-  runBatchBtn.addEventListener("click", async () => {
-    const raw = batchInput.value.trim();
-    if (!raw) {
-      alert("Please enter or paste at least one URL.");
+  runBtn.addEventListener("click", async () => {
+    const rawText = batchInput.value.trim();
+    if (!rawText) {
+      alert("Please enter at least one URL.");
       return;
     }
 
-    const urls = raw.split("\n").map(u => u.trim()).filter(u => u.length > 0);
+    const urls = rawText.split("\n").map(u => u.trim()).filter(u => u.length > 0);
     if (urls.length === 0) return;
 
-    runBatchBtn.disabled = true;
-    runBatchBtn.querySelector("span").textContent = `SCANNING ${urls.length} URLS...`;
+    runBtn.textContent = "Processing...";
+    runBtn.disabled = true;
 
     try {
+      const activeModelSelect = document.getElementById("activeModelSelect");
       const res = await fetch("/api/batch-predict", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ urls: urls, model_name: "Best (Auto)" })
+        body: JSON.stringify({ urls: urls, model_name: activeModelSelect.value })
       });
 
-      if (!res.ok) throw new Error("Batch request failed");
-      currentBatchData = await res.json();
-      renderBatchResults(currentBatchData);
-    } catch(err) {
-      console.error(err);
-      alert("Batch audit encountered an error.");
+      if (!res.ok) throw new Error("Batch execution failed");
+      const data = await res.json();
+      currentBatchData = data;
+      renderBatchResults(data);
+    } catch (err) {
+      console.error("Batch error:", err);
+      alert("Batch audit failed. Please try again.");
     } finally {
-      runBatchBtn.disabled = false;
-      runBatchBtn.querySelector("span").textContent = "EXECUTE BATCH AUDIT";
+      runBtn.textContent = "Execute Batch Scan";
+      runBtn.disabled = false;
     }
   });
 
@@ -316,25 +316,22 @@ function initBatchAudit() {
     const tbody = document.getElementById("batchTableBody");
     tbody.innerHTML = "";
 
-    data.results.forEach((row, idx) => {
+    data.results.forEach((item, idx) => {
       const tr = document.createElement("tr");
+      const isPhish = item.status === "Phishing";
       tr.innerHTML = `
-        <td>${idx + 1}</td>
-        <td style="max-width:320px;overflow:hidden;text-overflow:ellipsis;" title="${row.url}">${row.url}</td>
+        <td style="color:var(--color-text-tertiary);font-family:var(--font-mono);">${idx + 1}</td>
+        <td style="max-width:320px;overflow:hidden;text-overflow:ellipsis;font-family:var(--font-mono);">${escapeHtml(item.url)}</td>
         <td>
-          <span class="badge-status ${row.is_phishing ? 'phishing' : 'safe'}">
-            ${row.status}
+          <span style="font-weight:600;color:${isPhish ? 'var(--color-danger)' : 'var(--color-success)'}">
+            ${item.status}
           </span>
         </td>
-        <td style="font-family:var(--font-mono);font-weight:700;color:${row.is_phishing ? 'var(--threat-red)' : 'var(--safe-green)'}">
-          ${row.phishing_probability}%
-        </td>
-        <td><span class="badge-tag">${row.flag_count} Flags</span></td>
+        <td style="font-family:var(--font-mono);font-weight:600;">${item.phishing_probability}%</td>
+        <td><span class="count-tag">${item.flag_count} flags</span></td>
       `;
       tbody.appendChild(tr);
     });
-
-    resultsWrapper.scrollIntoView({ behavior: 'smooth', block: 'start' });
   }
 
   // Export to CSV
@@ -367,23 +364,23 @@ async function loadModelBenchmarks() {
     for (const [name, metrics] of Object.entries(comparison)) {
       const isBest = name === "LightGBM";
       const tr = document.createElement("tr");
-      if (isBest) tr.className = "highlight-row";
+      if (isBest) tr.className = "row-best";
 
       tr.innerHTML = `
         <td>
           <strong>${name}</strong>
-          ${isBest ? ' <span class="badge-tag" style="font-size:0.65rem;">BEST OVERALL</span>' : ''}
+          ${isBest ? ' <span class="tag-neutral" style="font-size:0.65rem;color:var(--color-primary);border-color:var(--color-primary-border);">Production Best</span>' : ''}
         </td>
         <td>${metrics.model_type}</td>
-        <td>${(metrics.accuracy * 100).toFixed(2)}%</td>
-        <td>${(metrics.precision * 100).toFixed(2)}%</td>
-        <td>${(metrics.recall * 100).toFixed(2)}%</td>
-        <td>${(metrics.specificity * 100).toFixed(2)}%</td>
-        <td>${(metrics.f1_score * 100).toFixed(2)}%</td>
-        <td>${metrics.roc_auc.toFixed(4)}</td>
-        <td>${metrics.train_time_sec}s</td>
-        <td>${metrics.latency_ms_per_sample.toFixed(4)} ms</td>
-        <td>${metrics.model_size_mb} MB</td>
+        <td style="font-family:var(--font-mono);font-weight:600;">${(metrics.accuracy * 100).toFixed(2)}%</td>
+        <td style="font-family:var(--font-mono);">${(metrics.precision * 100).toFixed(2)}%</td>
+        <td style="font-family:var(--font-mono);">${(metrics.recall * 100).toFixed(2)}%</td>
+        <td style="font-family:var(--font-mono);">${(metrics.specificity * 100).toFixed(2)}%</td>
+        <td style="font-family:var(--font-mono);">${(metrics.f1_score * 100).toFixed(2)}%</td>
+        <td style="font-family:var(--font-mono);">${metrics.roc_auc.toFixed(4)}</td>
+        <td style="font-family:var(--font-mono);">${metrics.train_time_sec}s</td>
+        <td style="font-family:var(--font-mono);">${metrics.latency_ms_per_sample.toFixed(4)} ms</td>
+        <td style="font-family:var(--font-mono);">${metrics.model_size_mb} MB</td>
       `;
       tbody.appendChild(tr);
     }
@@ -394,7 +391,7 @@ async function loadModelBenchmarks() {
 }
 
 /* ==========================================================================
-   5. Formal 10-Page Report Loader
+   5. Technical Report Loader
    ========================================================================== */
 async function loadReportMarkdown() {
   const container = document.getElementById("reportContainer");
@@ -405,7 +402,6 @@ async function loadReportMarkdown() {
     if (!res.ok) throw new Error("Could not find REPORT.md");
     const md = await res.text();
     
-    // Simple fast markdown to HTML parser for standard report tags
     container.innerHTML = parseSimpleMarkdown(md);
 
     copyBtn.addEventListener("click", () => {
@@ -416,9 +412,9 @@ async function loadReportMarkdown() {
     });
   } catch (err) {
     container.innerHTML = `
-      <div style="padding:2rem;text-align:center;">
-        <h3>Academic Report Artifact Ready</h3>
-        <p>The comprehensive 10-page academic report is saved at <code>REPORT.md</code> in the repository root.</p>
+      <div style="padding:1.5rem;color:var(--color-text-secondary);">
+        <h3>Academic Report Available</h3>
+        <p>The comprehensive 10-page academic report is located at <code>REPORT.md</code> in the repository root.</p>
       </div>
     `;
   }
@@ -435,4 +431,9 @@ function parseSimpleMarkdown(md) {
     .replace(/\n\n/gim, '<p></p>')
     .replace(/\n/gim, '<br>');
   return html;
+}
+
+function escapeHtml(text) {
+  const map = { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;' };
+  return text.replace(/[&<>"']/g, m => map[m]);
 }
